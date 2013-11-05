@@ -36,7 +36,7 @@ class FtpSync
     connect! unless @connection
     @recursion_level += 1
 
-    todelete = Dir.glob(File.join(localpath, '*'))
+    todelete = Dir.glob(File.join(localpath, '{*,.??*}'))
     
     tocopy = []
     recurse = []
@@ -101,7 +101,7 @@ class FtpSync
   def push_dir(localpath, remotepath)
     connect!
     
-    Dir.glob(File.join(localpath, '**', '*')) do |f|
+    Dir.glob(File.join(localpath, '**', '{*,.??*}')) do |f|
       f.gsub!("#{localpath}/", '')
       local = File.join localpath, f
       remote = "#{remotepath}/#{f}".gsub(/\/+/, '/')
